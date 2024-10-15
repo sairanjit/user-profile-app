@@ -3,19 +3,26 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "start": "pnpm expo start -c --dev-client",
+    "android": "pnpm expo run:android",
+    "prebuild": "pnpm expo prebuild --no-install"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@animo-id/react-native-ble-didcomm": "^0.9.2",
+    "@credo-ts/askar": "^0.5.11",
+    "@credo-ts/core": "^0.5.11",
+    "@credo-ts/react-hooks": "^0.6.1",
+    "@credo-ts/react-native": "^0.5.11",
+    "@credo-ts/transport-ble": "^0.3.0",
     "@expo/vector-icons": "^14.0.2",
+    "@hyperledger/aries-askar-react-native": "^0.2.3",
     "@react-navigation/native": "^6.0.2",
     "expo": "~51.0.28",
     "expo-constants": "~16.0.2",
@@ -26,10 +33,13 @@
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "~3.0.7",
     "expo-web-browser": "~13.0.3",
+    "fast-text-encoding": "^1.0.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.74.5",
+    "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "~2.16.1",
+    "react-native-get-random-values": "^1.11.0",
     "react-native-reanimated": "~3.10.1",
     "react-native-safe-area-context": "4.10.5",
     "react-native-screens": "3.31.1",
@@ -46,5 +56,9 @@
     "typescript": "~5.3.3"
   },
   "private": true,
-  "packageManager": "pnpm@9.10.0+sha512.73a29afa36a0d092ece5271de5177ecbf8318d454ecd701343131b8ebc0c1a91c487da46ab77c8e596d6acf1461e3594ced4becedf8921b074fbd8653ed7051c"
+  "packageManager": "pnpm@9.10.0+sha512.73a29afa36a0d092ece5271de5177ecbf8318d454ecd701343131b8ebc0c1a91c487da46ab77c8e596d6acf1461e3594ced4becedf8921b074fbd8653ed7051c",
+  "resolutions": {
+    "@unimodules/react-native-adapter": "./noop",
+    "@unimodules/core": "./noop"
+  }
 }
