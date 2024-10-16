@@ -12,6 +12,9 @@ importers:
 
   .:
     dependencies:
+      '@2060.io/credo-ts-didcomm-user-profile':
+        specifier: ^0.0.6
+        version: 0.0.6(@credo-ts/core@0.5.11(expo@51.0.37(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8)))(react-native@0.74.5(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@types/react@18.2.79)(react@18.2.0))(web-streams-polyfill@3.3.3))
       '@animo-id/react-native-ble-didcomm':
         specifier: ^0.9.2
         version: 0.9.2(@credo-ts/anoncreds@0.5.11(@hyperledger/anoncreds-shared@0.2.4)(expo@51.0.37(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8)))(react-native@0.74.5(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@types/react@18.2.79)(react@18.2.0))(web-streams-polyfill@3.3.3))(@credo-ts/core@0.5.11(expo@51.0.37(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8)))(react-native@0.74.5(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@types/react@18.2.79)(react@18.2.0))(web-streams-polyfill@3.3.3))(react-native@0.74.5(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0)
@@ -42,6 +45,9 @@ importers:
       expo:
         specifier: ~51.0.28
         version: 51.0.37(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))
+      expo-camera:
+        specifier: ^15.0.16
+        version: 15.0.16(expo@51.0.37(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8)))
       expo-constants:
         specifier: ~16.0.2
         version: 16.0.2(expo@51.0.37(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8)))
@@ -126,6 +132,11 @@ importers:
         version: 5.3.3
 
 packages:
+
+  '@2060.io/credo-ts-didcomm-user-profile@0.0.6':
+    resolution: {integrity: sha512-W2UMVc5JcQq1e1AVCJKFIpPcolJknu0/Yg9V3FmSnm1pVSa6ZI6a0K4wNMO/uJvsAtNlWYrDRhbjPWjED/ng8g==}
+    peerDependencies:
+      '@credo-ts/core': ^0.5.10
 
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
@@ -2698,6 +2709,11 @@ packages:
 
   expo-asset@10.0.10:
     resolution: {integrity: sha512-0qoTIihB79k+wGus9wy0JMKq7DdenziVx3iUkGvMAy2azscSgWH6bd2gJ9CGnhC6JRd3qTMFBL0ou/fx7WZl7A==}
+    peerDependencies:
+      expo: '*'
+
+  expo-camera@15.0.16:
+    resolution: {integrity: sha512-FLE02DMqkjwsb7IugKAqQvBe6s+TCQeb5LupO1+r//wAhBwmHncOrc6zV95ZEC2f9PTPK34nFH/s8CDGiVzIAA==}
     peerDependencies:
       expo: '*'
 
@@ -5549,6 +5565,15 @@ packages:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 
 snapshots:
+
+  '@2060.io/credo-ts-didcomm-user-profile@0.0.6(@credo-ts/core@0.5.11(expo@51.0.37(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8)))(react-native@0.74.5(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@types/react@18.2.79)(react@18.2.0))(web-streams-polyfill@3.3.3))':
+    dependencies:
+      '@credo-ts/core': 0.5.11(expo@51.0.37(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8)))(react-native@0.74.5(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@types/react@18.2.79)(react@18.2.0))(web-streams-polyfill@3.3.3)
+      class-transformer: 0.5.1
+      class-validator: 0.14.1
+      reflect-metadata: 0.1.14
+      rxjs: 7.8.1
+      tsyringe: 4.8.0
 
   '@ampproject/remapping@2.3.0':
     dependencies:
@@ -9255,6 +9280,11 @@ snapshots:
       md5-file: 3.2.3
     transitivePeerDependencies:
       - supports-color
+
+  expo-camera@15.0.16(expo@51.0.37(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))):
+    dependencies:
+      expo: 51.0.37(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))
+      invariant: 2.2.4
 
   expo-constants@16.0.2(expo@51.0.37(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))):
     dependencies:

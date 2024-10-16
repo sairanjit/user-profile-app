@@ -12,24 +12,14 @@ import { useEffect, useState } from "react"
 import "react-native-reanimated"
 
 import { useColorScheme } from "@/hooks/useColorScheme"
-import type { InitConfig } from "@credo-ts/core"
-import {
-  Agent,
-  ConnectionsModule,
-  ConsoleLogger,
-  LogLevel,
-} from "@credo-ts/core"
-import { AskarModule } from "@credo-ts/askar"
-import { agentDependencies } from "@credo-ts/react-native"
 import AgentProvider from "@credo-ts/react-hooks"
-import { View } from "react-native"
-import { ariesAskar } from "@hyperledger/aries-askar-react-native"
+import { AppAgent, initializeAppAgent } from "@/agent"
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
-  const [agent, setAgent] = useState()
+  const [agent, setAgent] = useState<AppAgent>()
   const colorScheme = useColorScheme()
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
@@ -41,27 +31,8 @@ export default function RootLayout() {
 
     const startAgent = async () => {
       try {
-        const config: InitConfig = {
-          label: "Kevin",
-          logger: new ConsoleLogger(LogLevel.debug),
-          walletConfig: {
-            id: "wallet-id",
-            key: "secure-key",
-          },
-        }
-
-        const newAgent = new Agent({
-          config,
-          dependencies: agentDependencies,
-          modules: {
-            askar: new AskarModule({ ariesAskar }),
-            connections: new ConnectionsModule({ autoAcceptConnections: true }),
-          },
-        })
-
-        await newAgent.initialize()
+        const newAgent = await initializeAppAgent({ walletLabel: "Kevin" })
         if (!newAgent) return
-
         setAgent(newAgent)
       } catch (error) {
         console.log("Error initializing agent", error)
@@ -82,13 +53,23 @@ export default function RootLayout() {
   }
 
   return (
-    // <AgentProvider agent={agent}>
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
-    // </AgentProvider>
+    <AgentProvider agent={agent}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        {/* <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack> */}
+        <Stack initialRouteName="index" screenOptions={{ headerShown: false }}>
+          <Stack.Screen
+            // options={{
+            //   presentation: "modal",
+            //   // Extra modal options not needed for QR Scanner
+            // }}
+            name="scan"
+          />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </ThemeProvider>
+    </AgentProvider>
   )
 }
