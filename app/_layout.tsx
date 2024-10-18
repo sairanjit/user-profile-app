@@ -14,6 +14,7 @@ import "react-native-reanimated"
 import { useColorScheme } from "@/hooks/useColorScheme"
 import AgentProvider from "@credo-ts/react-hooks"
 import { AppAgent, initializeAppAgent } from "@/agent"
+import { Central, CentralProvider } from "@animo-id/react-native-ble-didcomm"
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -33,6 +34,19 @@ export default function RootLayout() {
       try {
         const newAgent = await initializeAppAgent({ walletLabel: "Kevin" })
         if (!newAgent) return
+
+        const data = await newAgent.modules.userProfile.getUserProfileData()
+
+        console.log("data", data.displayName)
+        if (!data?.displayName) {
+          const userData =
+            await newAgent.modules.userProfile.updateUserProfileData({
+              displayName: "Kevin",
+            })
+
+          console.log("userData", userData)
+        }
+
         setAgent(newAgent)
       } catch (error) {
         console.log("Error initializing agent", error)
@@ -54,22 +68,32 @@ export default function RootLayout() {
 
   return (
     <AgentProvider agent={agent}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        {/* <Stack>
+      <CentralProvider central={new Central()}>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          {/* <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
         </Stack> */}
-        <Stack initialRouteName="index" screenOptions={{ headerShown: false }}>
-          <Stack.Screen
-            // options={{
-            //   presentation: "modal",
-            //   // Extra modal options not needed for QR Scanner
-            // }}
-            name="scan"
-          />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      </ThemeProvider>
+          <Stack initialRouteName="index">
+            <Stack.Screen
+              options={{
+                presentation: "modal",
+                title: "Scan QR Code",
+              }}
+              name="scan"
+            />
+            <Stack.Screen
+              options={{
+                title: "Process QR Code",
+              }}
+              name="qrprocess"
+            />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </ThemeProvider>
+      </CentralProvider>
     </AgentProvider>
   )
 }

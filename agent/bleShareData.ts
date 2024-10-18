@@ -161,23 +161,29 @@ const shareUserData = async (
           `[CENTRAL]: received message ${message.slice(0, 16)}...`
         )
 
-        const parsedMessage = JsonTransformer.deserialize(
-          message,
-          OutOfBandInvitation
-        )
+        console.log("🚀 ~ message:", message)
+
+        const data = await agent.oob.parseInvitation(message)
+
+        if (!data) return
 
         const routing = await agent.mediationRecipient.getRouting({
           useDefaultMediator: false,
         })
+        console.log("🚀 ~ routing:", routing)
 
-        await agent.oob.receiveInvitation(parsedMessage, {
+        await agent.oob.receiveInvitationFromUrl(message, {
           routing: { ...routing, endpoints: [`ble://${serviceUuid}`] },
         })
 
-        const userProfileRecord = await autoRespondToBleProofRequest(
+        console.log("🚀 ~ kk:")
+
+        const userProfileRecord = await autoRespondToUserProfileRequest(
           agent,
           profileData
         )
+
+        console.log("🚀 ~ userProfileRecord:", userProfileRecord)
 
         receivedMessageListener.remove()
         resolve(userProfileRecord)
@@ -185,7 +191,7 @@ const shareUserData = async (
     )
   })
 
-const autoRespondToBleProofRequest = (
+const autoRespondToUserProfileRequest = (
   agent: AppAgent,
   profileData: Partial<UserProfileData> | Record<string, unknown>
 ): Promise<Record<string, unknown>> => {
