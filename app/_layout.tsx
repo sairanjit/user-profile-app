@@ -15,6 +15,9 @@ import { useColorScheme } from "@/hooks/useColorScheme"
 import AgentProvider from "@credo-ts/react-hooks"
 import { AppAgent, initializeAppAgent } from "@/agent"
 import { Central, CentralProvider } from "@animo-id/react-native-ble-didcomm"
+import { PaperProvider } from "react-native-paper"
+import { LogBox } from "react-native"
+LogBox.ignoreAllLogs() //Ignore all log notifications
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -69,30 +72,29 @@ export default function RootLayout() {
   return (
     <AgentProvider agent={agent}>
       <CentralProvider central={new Central()}>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          {/* <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack> */}
-          <Stack initialRouteName="index">
-            <Stack.Screen
-              options={{
-                presentation: "modal",
-                title: "Scan QR Code",
-              }}
-              name="scan"
-            />
-            <Stack.Screen
-              options={{
-                title: "Process QR Code",
-              }}
-              name="qrprocess"
-            />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </ThemeProvider>
+        <PaperProvider>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <Stack initialRouteName="index">
+              <Stack.Screen
+                options={{
+                  presentation: "modal",
+                  title: "Scan QR Code",
+                }}
+                name="scan"
+              />
+              <Stack.Screen
+                options={{
+                  title: "Process QR Code",
+                }}
+                name="process-profile-request"
+              />
+              <Stack.Screen name="test" />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </ThemeProvider>
+        </PaperProvider>
       </CentralProvider>
     </AgentProvider>
   )

@@ -29,7 +29,7 @@ export default function ScanScreen() {
     console.log("bleData", bleData)
 
     router.push({
-      pathname: "/qrprocess",
+      pathname: "/process-profile-request",
       params: { serviceUUID: bleData.serviceUUID },
     })
 

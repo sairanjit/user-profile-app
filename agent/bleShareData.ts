@@ -1,8 +1,4 @@
-import {
-  type Agent,
-  JsonTransformer,
-  OutOfBandInvitation,
-} from "@credo-ts/core"
+import { type Agent, ConnectionRecord } from "@credo-ts/core"
 import {
   BleInboundTransport,
   BleOutboundTransport,
@@ -26,7 +22,6 @@ export type BleShareProfileOptions = {
   onFailure: () => Promise<void> | void
   onConnected?: () => Promise<void> | void
   onDisconnected?: () => Promise<void> | void
-  profileData: Record<string, unknown>
 }
 
 export const bleShareProfileData = async ({
@@ -36,7 +31,6 @@ export const bleShareProfileData = async ({
   onFailure,
   onConnected,
   onDisconnected,
-  profileData,
 }: BleShareProfileOptions) => {
   try {
     await startBleTransport(agent, central)
@@ -49,13 +43,8 @@ export const bleShareProfileData = async ({
 
     await connectedNotifier(agent, central, onConnected)
 
-    const proofRecord = await shareUserData(
-      agent,
-      central,
-      serviceUuid,
-      profileData
-    )
-    return proofRecord.id
+    const record = await connectWithUser(agent, central, serviceUuid)
+    return record
   } catch (e) {
     if (e instanceof Error) {
       agent.config.logger.error(e.message, { cause: e })
@@ -148,13 +137,15 @@ const disconnectedNotifier = (
   )
 }
 
-const shareUserData = async (
+const connectWithUser = async (
   agent: AppAgent,
   central: Central,
-  serviceUuid: string,
-  profileData: Partial<UserProfileData> | Record<string, unknown>
+  serviceUuid: string
 ) =>
-  new Promise<Record<string, unknown>>((resolve) => {
+  new Promise<{
+    connection: ConnectionRecord
+    query: string[] | undefined
+  }>((resolve) => {
     const receivedMessageListener = central.registerMessageListener(
       async ({ message }) => {
         agent.config.logger.info(
@@ -178,10 +169,7 @@ const shareUserData = async (
 
         console.log("🚀 ~ kk:")
 
-        const userProfileRecord = await autoRespondToUserProfileRequest(
-          agent,
-          profileData
-        )
+        const userProfileRecord = await waitForUserProfileRequest(agent)
 
         console.log("🚀 ~ userProfileRecord:", userProfileRecord)
 
@@ -191,27 +179,37 @@ const shareUserData = async (
     )
   })
 
-const autoRespondToUserProfileRequest = (
-  agent: AppAgent,
-  profileData: Partial<UserProfileData> | Record<string, unknown>
-): Promise<Record<string, unknown>> => {
-  return new Promise<Record<string, unknown>>((resolve, reject) => {
+const waitForUserProfileRequest = async (
+  agent: AppAgent
+): Promise<{ connection: ConnectionRecord; query: string[] | undefined }> => {
+  return new Promise<{
+    connection: ConnectionRecord
+    query: string[] | undefined
+  }>((resolve, reject) => {
     const listener = async ({
       payload: { connection, threadId, query },
     }: UserProfileRequestedEvent) => {
       const off = () =>
         agent.events.off(ProfileEventTypes.UserProfileRequested, listener)
 
-      await agent.modules.userProfile.sendUserProfile({
-        connectionId: connection.id,
-        profileData,
-      })
-      resolve(profileData)
+      resolve({ connection, query })
       off()
     }
     agent.events.on<UserProfileRequestedEvent>(
       ProfileEventTypes.UserProfileRequested,
       listener
     )
+  })
+}
+
+export const sendUserProfile = async (
+  agent: AppAgent,
+  connectionId: string,
+  profileData: Partial<UserProfileData> | Record<string, unknown>
+) => {
+  await agent.modules.userProfile.sendUserProfile({
+    connectionId: connectionId,
+    profileData,
+    sendBackYours: false,
   })
 }
