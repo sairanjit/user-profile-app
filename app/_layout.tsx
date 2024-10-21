@@ -17,6 +17,7 @@ import { AppAgent, initializeAppAgent } from "@/agent"
 import { Central, CentralProvider } from "@animo-id/react-native-ble-didcomm"
 import { PaperProvider } from "react-native-paper"
 import { LogBox } from "react-native"
+import { GlobalProvider } from "@/context/UserContext"
 LogBox.ignoreAllLogs() //Ignore all log notifications
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -70,32 +71,33 @@ export default function RootLayout() {
   }
 
   return (
-    <AgentProvider agent={agent}>
-      <CentralProvider central={new Central()}>
-        <PaperProvider>
-          <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-          >
-            <Stack initialRouteName="index">
-              <Stack.Screen
-                options={{
-                  presentation: "modal",
-                  title: "Scan QR Code",
-                }}
-                name="scan"
-              />
-              <Stack.Screen
-                options={{
-                  title: "Process QR Code",
-                }}
-                name="process-profile-request"
-              />
-              <Stack.Screen name="test" />
-              <Stack.Screen name="+not-found" />
-            </Stack>
-          </ThemeProvider>
-        </PaperProvider>
-      </CentralProvider>
-    </AgentProvider>
+    <GlobalProvider>
+      <AgentProvider agent={agent}>
+        <CentralProvider central={new Central()}>
+          <PaperProvider>
+            <ThemeProvider
+              value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            >
+              <Stack initialRouteName="index">
+                <Stack.Screen
+                  options={{
+                    presentation: "modal",
+                    title: "Scan QR Code",
+                  }}
+                  name="scan"
+                />
+                <Stack.Screen
+                  options={{
+                    title: "Process QR Code",
+                  }}
+                  name="process-profile-request"
+                />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+            </ThemeProvider>
+          </PaperProvider>
+        </CentralProvider>
+      </AgentProvider>
+    </GlobalProvider>
   )
 }

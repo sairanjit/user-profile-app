@@ -32,3 +32,38 @@ export const defaultUserData = {
     season: "Summer",
   },
 }
+
+export type User = {
+  name: string
+  email: string
+  avatar: string
+  location: string
+  bio: string
+  phone: string
+  socialLinks: {
+    twitter: string
+    linkedin: string
+    github: string
+  }
+  seat: {
+    seatType: string
+    seatLocation: string
+  }
+  food: {
+    vegetarian: boolean
+    vegan: boolean
+    glutenFree: boolean
+    dairyFree: boolean
+  }
+  accommodation: {
+    roomType: string
+    roomLocation: string
+    ratings: string
+    budget: string
+  }
+  travel: {
+    modeOfTransportation: string
+    budget: string
+    season: string
+  }
+}

@@ -1,6 +1,6 @@
 import { bleShareProfileData, sendUserProfile } from "@/agent/bleShareData"
 import PreferenceSharingModal from "@/components/SharePreferencesModal"
-import { defaultUserData } from "@/constants/userData"
+import { useGlobalState } from "@/context/UserContext"
 import {
   useCentral,
   useCentralShutdownOnUnmount,
@@ -32,6 +32,14 @@ export default function QRScreen() {
   const [modalVisible, setModalVisible] = useState(false)
   const [connectionId, setConnectionId] = useState("")
   const [query, setQuery] = useState<string[]>([])
+
+  const globalState = useGlobalState()
+
+  const userProfileData = globalState?.user
+
+  if (!userProfileData) {
+    return null
+  }
 
   console.log("params", params?.serviceUUID)
 
@@ -121,12 +129,11 @@ export default function QRScreen() {
     try {
       console.log(
         "Shared all preferences",
-        defaultUserData,
+        userProfileData,
         query,
         connectionId
       )
-      // use only values present in query from defaultUserData
-      const userData = extractValues(defaultUserData, query)
+      const userData = extractValues(userProfileData, query)
 
       console.log("userData sharing", userData)
 

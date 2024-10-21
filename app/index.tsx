@@ -14,12 +14,12 @@ import {
   Button,
   useTheme,
   TextInput,
-  Snackbar,
   Switch,
+  Snackbar,
 } from "react-native-paper"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { formatDisplayText } from "@/utils"
-import { defaultUserData } from "@/constants/userData"
+import { useGlobalState } from "@/context/UserContext"
 
 export default function UserProfile() {
   const router = useRouter()
@@ -28,6 +28,13 @@ export default function UserProfile() {
   const [snackbarVisible, setSnackbarVisible] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState("")
   const pathname = usePathname()
+  const globalState = useGlobalState()
+
+  const userData = globalState?.user
+
+  if (!userData) {
+    return null
+  }
 
   useEffect(() => {
     try {
@@ -39,52 +46,12 @@ export default function UserProfile() {
     }
   }, [])
 
-  // State for user data
-  const [userData, setUserData] = useState(defaultUserData)
-
-  // State for form validation
-  const [errors, setErrors] = useState({})
-
   // State for temporary edits
   const [editedData, setEditedData] = useState({ ...userData })
 
-  const validateForm = () => {
-    const newErrors = {
-      name: "",
-      email: "",
-      phone: "",
-    }
-
-    if (!editedData.name.trim()) {
-      newErrors.name = "Name is required"
-    }
-
-    if (!editedData.email.trim()) {
-      newErrors.email = "Email is required"
-    } else if (!/\S+@\S+\.\S+/.test(editedData.email)) {
-      newErrors.email = "Email is invalid"
-    }
-
-    if (!editedData.phone.trim()) {
-      newErrors.phone = "Phone number is required"
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
   const handleSave = async () => {
-    if (!validateForm()) {
-      setSnackbarMessage("Please fix the errors in the form")
-      setSnackbarVisible(true)
-      return
-    }
-
     try {
-      // Here you would typically make an API call to update the user profile
-      // await updateUserProfile(editedData);
-
-      setUserData(editedData)
+      globalState?.setUser({ ...editedData })
       setIsEditing(false)
       setSnackbarMessage("Profile updated successfully!")
       setSnackbarVisible(true)
@@ -96,7 +63,6 @@ export default function UserProfile() {
 
   const handleCancel = () => {
     setEditedData({ ...userData })
-    setErrors({})
     setIsEditing(false)
   }
 
@@ -114,7 +80,6 @@ export default function UserProfile() {
               setEditedData((prev) => ({ ...prev, name: text }))
             }
             style={styles.nameInput}
-            error={errors.name}
             mode="outlined"
           />
         ) : (
@@ -197,7 +162,6 @@ export default function UserProfile() {
               onChangeText={(text) =>
                 setEditedData((prev) => ({ ...prev, email: text }))
               }
-              error={errors.email}
               mode="outlined"
               style={styles.input}
               left={<TextInput.Icon icon="email" />}
@@ -208,7 +172,6 @@ export default function UserProfile() {
               onChangeText={(text) =>
                 setEditedData((prev) => ({ ...prev, phone: text }))
               }
-              error={errors.phone}
               mode="outlined"
               style={styles.input}
               left={<TextInput.Icon icon="phone" />}
@@ -344,10 +307,10 @@ export default function UserProfile() {
     subKey: string,
     newValue: string | boolean | number
   ) => {
-    setUserData({
-      ...userData,
+    setEditedData({
+      ...editedData,
       [mainKey]: {
-        ...userData[mainKey],
+        ...editedData[mainKey],
         [subKey]: newValue,
       },
     })
@@ -364,9 +327,11 @@ export default function UserProfile() {
       "bio",
     ]
 
+    const userPrefData = isEditing ? editedData : userData
+
     return (
       <View style={styles.container}>
-        {Object.entries(userData).map(([mainKey, section]) => {
+        {Object.entries(userPrefData).map(([mainKey, section]) => {
           if (excludedKeys.includes(mainKey)) {
             return null
           }
@@ -579,12 +544,6 @@ export const styles = StyleSheet.create({
   socialLinkContainer: {
     marginVertical: 8,
   },
-  errorText: {
-    color: "#B00020",
-    fontSize: 12,
-    marginTop: 4,
-    marginLeft: 12,
-  },
   dialogContent: {
     paddingHorizontal: 24,
     paddingBottom: 24,
@@ -679,10 +638,6 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: "#666",
     marginTop: 4,
-  },
-  // Error state styles
-  errorInput: {
-    borderColor: "#B00020",
   },
   // Success state styles
   successText: {
