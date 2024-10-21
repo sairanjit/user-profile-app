@@ -51,13 +51,26 @@ Follow these instructions to set up and run the project:
 
 ```mermaid
 sequenceDiagram
-    participant dotcom
-    participant iframe
-    participant viewscreen
-    dotcom->>iframe: loads html w/ iframe url
-    iframe->>viewscreen: request template
-    viewscreen->>iframe: html & javascript
-    iframe->>dotcom: iframe ready
-    dotcom->>iframe: set mermaid data on iframe
-    iframe->>iframe: render mermaid
+    autonumber
+    actor User
+    actor Verifier
+    
+    Note right of Verifier: Choose user preference template
+    Verifier->>Verifier: Generate QR Code with<br/>BLE Service UUID
+    
+    User->>Verifier: Scan QR Code
+    Note over User: Extract Service UUID
+    
+    User->>Verifier: BLE scan & connect<br/>using Service UUID
+    Verifier-->>User: BLE Connection established
+    
+    Verifier->>User: Send out-of-band didcomm invitation over ble
+    Note over User: Process invitation
+    User->>Verifier: Accept invitation
+    Verifier-->>User: DIDComm Connection established
+    
+    Verifier->>User: Request user profile using DIDComm over BLE
+    User->>Verifier: Share requested profile data using DIDComm over BLE
+    
+    Note over User, Verifier: Data sharing completed successfully
 ```
