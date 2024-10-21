@@ -1,50 +1,63 @@
-# Welcome to your Expo app 👋
+# User Profile App: DIF Hackathon 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This App helps in storing and sharing user profile data using DID Communication with Bluetooth as a transport layer.
 
-## Get started
+## Table of Contents
 
-1. Install dependencies
+1. [Links](#links)
+2. [Instructions to Setup](#instructions-to-setup)
+3. [Tech Stack](#tech-stack)
+4. [Solution](#solution)
 
-   ```bash
-   npm install
-   ```
+## Links
 
-2. Start the app
+- [Documentation](https://docs.expo.dev/)
+- [GitHub repository](https://github.com/expo/expo)
+- [Expo on Stack Overflow](https://stackoverflow.com/questions/tagged/expo)
+- [Expo on Twitter](https://twitter.com/expo)
 
-   ```bash
-    npx expo start
-   ```
+## Instructions to Setup
 
-In the output, you'll find options to open the app in a
+> Note: You will need to have real `Android` device connected to your computer to run the app.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Follow these instructions to set up and run the project:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- Clone the Git repository: `https://github.com/sairanjit/user-profile-app`
+- Install project dependencies: `pnpm install`
+- Build the native dependencies: `pnpm prebuild`
+- Run the app: `pnpm android`
 
-## Get a fresh project
+## Tech Stack
 
-When you're ready, run:
+### Frontend
 
-```bash
-npm run reset-project
+- [React Native](https://reactnative.dev/)
+- [Expo](https://expo.dev/)
+- [React Navigation](https://reactnavigation.org/)
+- [React Native Paper](https://callstack.github.io/react-native-paper/)
+
+### Dependencies
+
+- [Credo](https://github.com/openwallet-foundation/credo-ts)
+- [Bluetooth](https://github.com/animo-id/react-native-ble-didcomm)
+
+### DIF Work Items
+
+- [DIDs](https://didcomm.org/)
+- [DIDComm over Bluetooth](https://github.com/decentralized-identity/didcomm-bluetooth/tree/main)
+- [Peer DID Method](https://github.com/decentralized-identity/peer-did-method-spec)
+
+## Solution
+
+```mermaid
+sequenceDiagram
+    participant dotcom
+    participant iframe
+    participant viewscreen
+    dotcom->>iframe: loads html w/ iframe url
+    iframe->>viewscreen: request template
+    viewscreen->>iframe: html & javascript
+    iframe->>dotcom: iframe ready
+    dotcom->>iframe: set mermaid data on iframe
+    iframe->>iframe: render mermaid
 ```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
