@@ -152,8 +152,6 @@ const connectWithUser = async (
           `[CENTRAL]: received message ${message.slice(0, 16)}...`
         )
 
-        console.log("🚀 ~ message:", message)
-
         const data = await agent.oob.parseInvitation(message)
 
         if (!data) return
@@ -161,17 +159,12 @@ const connectWithUser = async (
         const routing = await agent.mediationRecipient.getRouting({
           useDefaultMediator: false,
         })
-        console.log("🚀 ~ routing:", routing)
 
         await agent.oob.receiveInvitationFromUrl(message, {
           routing: { ...routing, endpoints: [`ble://${serviceUuid}`] },
         })
 
-        console.log("🚀 ~ kk:")
-
         const userProfileRecord = await waitForUserProfileRequest(agent)
-
-        console.log("🚀 ~ userProfileRecord:", userProfileRecord)
 
         receivedMessageListener.remove()
         resolve(userProfileRecord)

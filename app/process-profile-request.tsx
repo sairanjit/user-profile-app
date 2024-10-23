@@ -69,9 +69,7 @@ export default function QRScreen() {
       agent,
       onConnected,
       onDisconnected,
-      // profileData: { displayName: "Kevin" },
     }).then((data) => {
-      console.log("data check 1111", data)
 
       if (!data.query && !data.connection) return
 
@@ -127,18 +125,12 @@ export default function QRScreen() {
 
   const handleShare = async () => {
     try {
-      console.log(
-        "Shared all preferences",
-        userProfileData,
-        query,
-        connectionId
-      )
       const userData = extractValues(userProfileData, query)
-
-      console.log("userData sharing", userData)
 
       await sendUserProfile(agent, connectionId!, userData)
       console.log("userData shared")
+
+      await new Promise((resolve) => setTimeout(resolve, 2000))
 
       setModalVisible(false)
       router.replace("/")

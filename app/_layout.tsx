@@ -41,7 +41,6 @@ export default function RootLayout() {
 
         const data = await newAgent.modules.userProfile.getUserProfileData()
 
-        console.log("data", data.displayName)
         if (!data?.displayName) {
           const userData =
             await newAgent.modules.userProfile.updateUserProfileData({

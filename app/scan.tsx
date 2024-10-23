@@ -18,15 +18,9 @@ export default function ScanScreen() {
     setIsProcessing(true)
     setIsLoading(true)
 
-    console.log("scannedData", scannedData.data)
-
     setHelpText(scannedData.data)
 
-    // await new Promise((resolve) => setTimeout(resolve, 5000))
-
     const bleData = JSON.parse(scannedData.data)
-
-    console.log("bleData", bleData)
 
     router.push({
       pathname: "/process-profile-request",
