@@ -50,27 +50,27 @@ Follow these instructions to set up and run the project:
 
 ## Solution
 
-1. Initial Setup (Verifier Side):
+1. **Initial Setup (Verifier Side)**:
    1. Verifier selects a user preference template
    2. Verifier generates a QR code containing a Bluetooth Low Energy (BLE) Service UUID
    3. Verifier start advertising using the above Service UUID
-2. User Interaction with QR Code:
+2. **User Interaction with QR Code**:
    1. User scans the QR code using their device
    2. User's device extracts the BLE Service UUID from the QR code
-3. BLE Connection Establishment:
+3. **BLE Connection Establishment**:
    1. User's device initiates a BLE scan using the extracted Service UUID
    2. User's device connects to the Verifier using the Service UUID
    3. BLE connection is successfully established between User and Verifier
-4. DIDComm Setup:
+4. **DIDComm Setup**:
    1. Verifier sends a DIDComm invitation to User over the BLE connection
    2. User processes the received DIDComm invitation
    3. User accepts the DIDComm invitation
    4. DIDComm connection is successfully established over BLE
-5. User Profile Data Exchange:
+5. **User Profile Data Exchange**:
    1. Verifier sends a request for user profile data using DIDComm over BLE with the selected user preference template
    2. User shares the requested profile data using DIDComm over BLE
    3. Data sharing process completes successfully
-6. BLE Connection Closure:
+6. **BLE Connection Closure**:
    1. User's device closes the BLE connection
    2. Verifier's device closes the BLE connection
 
