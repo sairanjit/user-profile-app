@@ -11,10 +11,8 @@ This App helps in storing and sharing user profile data using DID Communication 
 
 ## Links
 
-- [Documentation](https://docs.expo.dev/)
-- [GitHub repository](https://github.com/expo/expo)
-- [Expo on Stack Overflow](https://stackoverflow.com/questions/tagged/expo)
-- [Expo on Twitter](https://twitter.com/expo)
+- [User Profile App](https://github.com/sairanjit/user-profile-app)
+- [Profile Verifier App](https://github.com/sairanjit/profile-verifier-app)
 
 ## Instructions to Setup
 
