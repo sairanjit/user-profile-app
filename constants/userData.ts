@@ -31,6 +31,13 @@ export const defaultUserData = {
     budget: "Mid Range",
     season: "Summer",
   },
+  healthData: {
+    bloodGroup: "A+",
+    allergies: "Penicillin, Ibuprofen",
+    height: "178",
+    weight: "65",
+    "B.M.I": "23.5",
+  }
 }
 
 export type User = {
@@ -65,5 +72,12 @@ export type User = {
     modeOfTransportation: string
     budget: string
     season: string
+  },
+  healthData: {
+    bloodGroup: string
+    allergies: string
+    height: string
+    weight: string
+    "B.M.I": string
   }
 }

@@ -70,7 +70,6 @@ export default function QRScreen() {
       onConnected,
       onDisconnected,
     }).then((data) => {
-
       if (!data.query && !data.connection) return
 
       setQuery(data.query!)
@@ -130,10 +129,10 @@ export default function QRScreen() {
       await sendUserProfile(agent, connectionId!, userData)
       console.log("userData shared")
 
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      await new Promise((resolve) => setTimeout(resolve, 1500))
 
       setModalVisible(false)
-      router.replace("/")
+      router.dismissAll()
     } catch (error) {
       console.log("Error sharing user data", error)
     }
@@ -142,7 +141,7 @@ export default function QRScreen() {
   const handleDecline = () => {
     console.log("Declined sharing preferences")
     setModalVisible(false)
-    router.replace("/")
+    router.dismissAll()
   }
 
   return (
