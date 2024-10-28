@@ -13,6 +13,8 @@ This App helps in storing and sharing user profile data using DID Communication 
 
 - [User Profile App](https://github.com/sairanjit/user-profile-app)
 - [Profile Verifier App](https://github.com/sairanjit/profile-verifier-app)
+- [Presentation](https://github.com/sairanjit/user-profile-app/blob/main/docs/DIFHackathon2024.pdf)
+- [Demo](https://youtu.be/7WxJwGgE33c)
 
 ## Instructions to Setup
 
@@ -77,23 +79,23 @@ sequenceDiagram
     autonumber
     actor User
     actor Verifier
-    
+
     Note right of Verifier: Choose user preference template
     Verifier->>Verifier: Generate QR Code with<br/>BLE Service UUID
-    
+
     User->>Verifier: Scan QR Code
     Note over User: Extract Service UUID
-    
+
     User->>Verifier: BLE scan & connect<br/>using Service UUID
     Verifier-->>User: BLE Connection established
-    
+
     Verifier->>User: Send out-of-band didcomm invitation over ble
     Note over User: Process invitation
     User->>Verifier: Accept invitation
     Verifier-->>User: DIDComm Connection established
-    
+
     Verifier->>User: Request user profile using DIDComm over BLE
     User->>Verifier: Share requested profile data using DIDComm over BLE
-    
+
     Note over User, Verifier: Data sharing completed successfully
 ```
